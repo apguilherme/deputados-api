@@ -1,44 +1,23 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0%;
-}
-
-select {
-  background-color: rgba(128, 128, 128, 0.5);
-  padding: 10px;
-  margin: 3px;
-  border: none;
-}
-
-label{
-  margin: 5px;
-}
-
-.thepage {
-  display: flex;
-  flex-direction: column;
-}
-
-.menu {
-  padding: 5px;
-  border: 1px solid gray;
-  background-color: #2d2d2d;
-  color: #fff;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  text-align: center;
-}
-
-.inputfile {
-  background-color: rgba(128, 128, 128, 0.5);
-  padding: 10px;
-  border: none;
 }
 
 .plotstyle {
   width: 700px;
+}
+
+.comparacao {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  margin: 5px;
+}
+
+.comparacao img {
+  padding: 10px;
 }

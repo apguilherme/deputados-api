@@ -1,66 +1,45 @@
 import React, { useState } from 'react'
-import * as d3 from 'd3'
 import './App.css'
-import Selects from './components/Selects'
-import Plot from './components/Plot'
 
-/*
-- salvar no mongodb o email e uma configuração de gráfico (valores das colunas x e y, titulos e nomes das colunas, tipo de gráfico, tema de cores). Cada email pode ter vários plots
+import TabPanel from './components/TabPanel'
 
-- usuário pode entrar na aba dele (basta fornecer seu email) e ver seus gráficos
+import { createMuiTheme, responsiveFontSizes, MuiThemeProvider, Switch, FormGroup, FormControlLabel } from '@material-ui/core'
+import { deepOrange, orange, lightBlue, blue } from '@material-ui/core/colors' // cores
+import CssBaseLine from '@material-ui/core/CssBaseLine' // ajuste navegadores antigos
 
-- Front lista plots do email e ao clicar o useState atualiza as variáveis passadas para gerar o Plot
+export default function App() {
 
-- Limitar quantidade de linhas usadas (performance)
+  const [temaDark, setTemaDark] = useState(true)
 
-- Gerar PDF da página react
+  const [check, setCheck] = useState(false)
+  const tipoPaleta = temaDark ? 'dark' : 'light'
+  const corPrimaria = temaDark ? orange[500] : blue[500]
+  const corSecundaria = temaDark ? deepOrange[900] : lightBlue[400]
+  let tema = createMuiTheme({
+    palette: {
+      type: tipoPaleta,
+      primary: { main: corPrimaria },
+      secondary: { main: corSecundaria }
+    }
+  })
+  tema = responsiveFontSizes(tema) // reduz de acordo com tela
 
-- Permitir request pra url de um gráfico: www.app.com/myemailATokDOTcom/IDmyplot001
-*/
-
-function App() {
-
-  const [data, setData] = useState([]) // arquivo do usuário
-  const [fileName, setFileName] = useState('') // nome do arquivo
-  const [xCol, setXcol] = useState('') // nome da coluna selecionada para o eixo x
-  const [yCol, setYcol] = useState('') // nome da coluna selecionada para o eixo y
-  const [plotType, setPlotType] = useState('') // tipo de gráfico
-
-
-  function getFile(e) { // recebe o upload de arquivo do usuário
-    const url = URL.createObjectURL(e.target.files[0])
-    setFileName(e.target.files[0].name)
-    setXcol('')
-    setYcol('')
-    d3.csv(url).then(file => {
-      setData(file)
-      URL.revokeObjectURL(url) // free memory
-    })
+  function handleTheme() {
+    setTemaDark(!temaDark)
+    setCheck(!check)
   }
 
-
   return (
-    <div className="thepage">
-
-      <div className="menu">
-        <input
-          className="inputfile"
-          type="file"
-          accept=".csv,.xlsx,.xls"
-          onChange={e => getFile(e)}
+    <MuiThemeProvider theme={tema}>
+      <CssBaseLine />
+      <FormGroup style={{ 'marginLeft': '20px', 'color': 'grey' }}>
+        <FormControlLabel
+          control={<Switch size="small" checked={check} onChange={handleTheme} color="primary" inputProps={{ 'aria-label': 'primary checkbox' }} />}
+          label={"Tema " + tipoPaleta}
         />
-        {
-          data.length>0
-          && <Selects colunas={data.columns} xCol={xCol} yCol={yCol} setXcol={setXcol} setYcol={setYcol} plotType={plotType} setPlotType={setPlotType} />
-        }
-      </div>
-      {
-        xCol.length>0 && yCol.length>0 && plotType.length>0
-        && <Plot data={data} xCol={xCol} yCol={yCol} fileName={fileName} plotType={plotType} />
-      }
-
-    </div>
+      </FormGroup>
+      <TabPanel />
+    </MuiThemeProvider>
   )
 }
 
-export default App
