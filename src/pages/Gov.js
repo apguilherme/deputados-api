@@ -6,6 +6,7 @@ import Loading from '../components/Loading'
 import SelectComponent from '../components/SelectComponent'
 import DeputadoCard from '../components/DeputadoCard'
 import DeputadoDetail from '../components/DeputadoDetail'
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -36,15 +37,18 @@ export default function Gov() {
     const [erro, setErro] = useState('')
 
     // states para apresentação de dados em tela
-    const [lista, setLista] = useState('') // listagem de deputados a partir dos filtros dos selects
     const [uf, setUf] = useState('Todos') // estado brasileiro selecionado no select
     const [sigla, setSigla] = useState('Todos') // partido político selecionado no select
-    const [deputados, setDeputados] = useState([]) // dados dos deputados buscados com api  
+    const [deputados, setDeputados] = useState([]) // dados dos deputados buscados com api (todos 513 deputados) 
+    const [lista, setLista] = useState([]) // listagem de deputados a partir dos filtros dos selects 
+    const [currentPage, setCurrentPage] = useState(1) // página atual, definida a partir da page de BasicPagination
     const [deputadoId, setDeputadoId] = useState('') // recebe o ID do deputado para ser mostrado em detalhes
 
     // states para filtros com selects
     const [partidos, setPartidos] = useState(['Todos']) // partidos buscados com api
     const estados = ['Todos', 'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO', 'DF'] // estados brasileiros
+    const itemsPerPage = 8 // quantidade de itens da lista em cada página apresentada
+
 
     useEffect(() => { // faz chamada à API do governo, caso ainda não exista 'deputadosapi' e 'partidosapi' no localStorage
 
@@ -59,7 +63,6 @@ export default function Gov() {
         else {
             getDadosGovAPI()
         }
-
     }, [])
 
     useEffect(() => { // atualiza listagem de cards quando 'deputados' é alterado
@@ -69,6 +72,7 @@ export default function Gov() {
         }
 
     }, [deputados])
+
 
     function updateListagem(values) { // gera os cards para listagem em tela, altera 'lista'
 
@@ -92,7 +96,7 @@ export default function Gov() {
         setIsLoading(true)
 
         let depsUrl = `https://dadosabertos.camara.leg.br/api/v2/deputados?ordem=ASC&ordenarPor=nome`
-        let partsUrl = `https://dadosabertos.camara.leg.br/api/v2/partidos?itens=100&ordem=ASC&ordenarPor=sigla`
+        let partsUrl = `https://dadosabertos.camara.leg.br/api/v2/partidos?itens=200&ordem=ASC&ordenarPor=sigla`
 
         await fetch(depsUrl) // deputados
             .then(async response => {
@@ -140,16 +144,18 @@ export default function Gov() {
                         return dado.siglaUf === uf
                     }
                 })
+                setCurrentPage(1) // define volta para primeira página
             }
 
             updateListagem(subDados) // lista dados filtrados
-            
+
         }
 
         setIsLoading(false)
 
     }
 
+    
     return (
         <>
             {!isLoading && erro.length === 0 && // apresenta opções de select para filtrar deputados
@@ -175,15 +181,26 @@ export default function Gov() {
 
             {
                 !isLoading && lista.length > 0 && partidos.length > 1 && // >1 pois a princípio existe o 'Todos' no array
-                <div className={classes.root}>
-                    {lista}
-                </div>
+                <>
+                    <div className={classes.root}>
+                        {lista.slice(currentPage*itemsPerPage-itemsPerPage, currentPage*itemsPerPage)} 
+                    </div>
+                    <div className={classes.root}>
+                        <Pagination 
+                            defaultPage={1} 
+                            count={Math.ceil(lista.length/itemsPerPage)} 
+                            color='standard' 
+                            onChange={(event, page) => setCurrentPage(page)} 
+                        />
+                    </div>
+                </>
             }
 
             {
                 deputadoId !== '' && // abre o detalhe do deputado se existir um valor pra deputadoId
                 <DeputadoDetail deputadoId={deputadoId} setDeputadoId={setDeputadoId} deputados={deputados} />
             }
+
         </>
     )
 }
