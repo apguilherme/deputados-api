@@ -81,6 +81,7 @@ export default function Gov() {
                 key={dado.id}
                 variant="contained"
                 id={dado.id}
+                email={dado.email}
                 nome={dado.nome}
                 siglaPartido={dado.siglaPartido}
                 siglaUf={dado.siglaUf}
@@ -97,7 +98,7 @@ export default function Gov() {
 
         let depsUrl = `https://dadosabertos.camara.leg.br/api/v2/deputados?ordem=ASC&ordenarPor=nome`
         let partsUrl = `https://dadosabertos.camara.leg.br/api/v2/partidos?itens=200&ordem=ASC&ordenarPor=sigla`
-
+        
         await fetch(depsUrl) // deputados
             .then(async response => {
                 await response.json().then(data => {

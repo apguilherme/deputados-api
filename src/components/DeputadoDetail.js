@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Dialog, AppBar, Toolbar, Typography, Slide, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Link, Avatar } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
+import PieChartIcon from '@material-ui/icons/PieChart';
 import Alert from '@material-ui/lab/Alert';
 
-import Loading from '../components/Loading'
+import PieDialog from './PieDialog'
+import Loading from './Loading'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -33,6 +35,7 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
     const [erro, setErro] = useState('')
     const [gastos, setGastos] = useState([])
     const [escolhido, setEscolhido] = useState('')
+    const [isPlot, setIsPlot] = useState(false)
 
     useEffect(() => { // executa busca na api sempre que deputadoId mudar
 
@@ -50,7 +53,8 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
             setIsLoading(true)
             setErro('')
 
-            let deputadoIdUrl = `https://dadosabertos.camara.leg.br/api/v2/deputados/${deputadoId}/despesas?ordem=ASC&ordenarPor=ano`
+            let anos = `ano=2020` //&ano=2019&ano=2018&ano=2017
+            let deputadoIdUrl = `https://dadosabertos.camara.leg.br/api/v2/deputados/${deputadoId}/despesas?${anos}&ordem=DESC&ordenarPor=ano`
 
             await fetch(deputadoIdUrl)
                 .then(async response => {
@@ -75,6 +79,10 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
 
     }
 
+    function showPie(){
+        setIsPlot(!isPlot)
+    }
+
     return (
 
         // só abre o Dialog caso deputadoId seja alterado para um valor diferente de vazio
@@ -91,6 +99,10 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
                         <Typography variant="h6" className={classes.title}>
                             {escolhido.nome} ({escolhido.siglaUf}) - {escolhido.siglaPartido}
                         </Typography>
+                        {
+                            !isLoading && 
+                            <Button autoFocus color="inherit" onClick={showPie}><PieChartIcon /> Gráfico</Button>
+                        }
                         <Button autoFocus color="inherit" onClick={handleClose}><CloseIcon /> Fechar</Button>
                     </Toolbar>
                 </AppBar>
@@ -119,9 +131,9 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
                                         <TableCell>Tipo Despesa</TableCell>
                                         <TableCell>Tipo Documento</TableCell>
                                         <TableCell>Link Documento</TableCell>
-                                        <TableCell>Valor Documento (R$)</TableCell>
-                                        <TableCell>Valor Glosa (R$)</TableCell>
-                                        <TableCell>Valor Líquido (R$)</TableCell>
+                                        <TableCell>Valor Documento</TableCell>
+                                        <TableCell>Valor Glosa</TableCell>
+                                        <TableCell>Valor Líquido</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -137,9 +149,9 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
                                                     <Button size="small" variant="contained" color="primary">Abrir</Button>
                                                 </Link>
                                             </TableCell>
-                                            <TableCell>{g.valorDocumento.toFixed(2)}</TableCell>
-                                            <TableCell>{g.valorGlosa.toFixed(2)}</TableCell>
-                                            <TableCell>{g.valorLiquido.toFixed(2)}</TableCell>
+                                            <TableCell>{g.valorDocumento.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</TableCell>
+                                            <TableCell>{g.valorGlosa.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</TableCell>
+                                            <TableCell>{g.valorLiquido.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -150,7 +162,12 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
                 }
 
             </Dialog>
+            
+            {
+                isPlot && !isLoading &&
+                <PieDialog gastos={gastos} isPlot={isPlot} setIsPlot={setIsPlot} escolhido={escolhido} />
+            }
 
-        </div>
+        </div >
     )
 }
