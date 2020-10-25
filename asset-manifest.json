@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/deputados-api/static/css/main.61ec5f47.chunk.css",
-    "main.js": "/deputados-api/static/js/main.ee744235.chunk.js",
-    "main.js.map": "/deputados-api/static/js/main.ee744235.chunk.js.map",
+    "main.css": "/deputados-api/static/css/main.e81335f9.chunk.css",
+    "main.js": "/deputados-api/static/js/main.5b6de9f7.chunk.js",
+    "main.js.map": "/deputados-api/static/js/main.5b6de9f7.chunk.js.map",
     "runtime-main.js": "/deputados-api/static/js/runtime-main.1bbd5da6.js",
     "runtime-main.js.map": "/deputados-api/static/js/runtime-main.1bbd5da6.js.map",
-    "static/js/2.bf5c1de4.chunk.js": "/deputados-api/static/js/2.bf5c1de4.chunk.js",
-    "static/js/2.bf5c1de4.chunk.js.map": "/deputados-api/static/js/2.bf5c1de4.chunk.js.map",
+    "static/js/2.5c518396.chunk.js": "/deputados-api/static/js/2.5c518396.chunk.js",
+    "static/js/2.5c518396.chunk.js.map": "/deputados-api/static/js/2.5c518396.chunk.js.map",
     "index.html": "/deputados-api/index.html",
-    "precache-manifest.02418aacdcdb795f2b5f25e1716f88ab.js": "/deputados-api/precache-manifest.02418aacdcdb795f2b5f25e1716f88ab.js",
+    "precache-manifest.d9627d01c4f67507fc15b40a7f8f63f3.js": "/deputados-api/precache-manifest.d9627d01c4f67507fc15b40a7f8f63f3.js",
     "service-worker.js": "/deputados-api/service-worker.js",
-    "static/css/main.61ec5f47.chunk.css.map": "/deputados-api/static/css/main.61ec5f47.chunk.css.map",
-    "static/js/2.bf5c1de4.chunk.js.LICENSE.txt": "/deputados-api/static/js/2.bf5c1de4.chunk.js.LICENSE.txt"
+    "static/css/main.e81335f9.chunk.css.map": "/deputados-api/static/css/main.e81335f9.chunk.css.map",
+    "static/js/2.5c518396.chunk.js.LICENSE.txt": "/deputados-api/static/js/2.5c518396.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.1bbd5da6.js",
-    "static/js/2.bf5c1de4.chunk.js",
-    "static/css/main.61ec5f47.chunk.css",
-    "static/js/main.ee744235.chunk.js"
+    "static/js/2.5c518396.chunk.js",
+    "static/css/main.e81335f9.chunk.css",
+    "static/js/main.5b6de9f7.chunk.js"
   ]
 }
