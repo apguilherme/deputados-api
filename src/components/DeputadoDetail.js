@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Button, Dialog, AppBar, Toolbar, Typography, Slide, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Link, Avatar } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import PieChartIcon from '@material-ui/icons/PieChart';
-import Alert from '@material-ui/lab/Alert';
+import Alert from '@material-ui/lab/Alert'
 
-import PieDialog from './PieDialog'
+import PlotDialog from './PlotDialog'
 import Loading from './Loading'
 
 const useStyles = makeStyles((theme) => ({
@@ -79,7 +79,7 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
 
     }
 
-    function showPie(){
+    function showPlot(){
         setIsPlot(!isPlot)
     }
 
@@ -101,7 +101,7 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
                         </Typography>
                         {
                             !isLoading && 
-                            <Button autoFocus color="inherit" onClick={showPie}><PieChartIcon /> Gráfico</Button>
+                            <Button autoFocus color="inherit" onClick={showPlot}><PieChartIcon /> Gráfico</Button>
                         }
                         <Button autoFocus color="inherit" onClick={handleClose}><CloseIcon /> Fechar</Button>
                     </Toolbar>
@@ -165,7 +165,7 @@ export default function DeputadoDetail({ deputadoId, setDeputadoId, deputados })
             
             {
                 isPlot && !isLoading &&
-                <PieDialog gastos={gastos} isPlot={isPlot} setIsPlot={setIsPlot} escolhido={escolhido} />
+                <PlotDialog gastos={gastos} isPlot={isPlot} setIsPlot={setIsPlot} escolhido={escolhido} />
             }
 
         </div >
